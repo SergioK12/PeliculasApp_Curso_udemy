@@ -8,7 +8,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+
       appBar: AppBar(
         title: const  Text("Peliculas en cine"),
         actions: [
@@ -18,10 +18,12 @@ class HomeView extends StatelessWidget {
           ),  
         ],
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
          children: const [
-          CardSwiper()
+          CardSwiper(),
+          MovieSlider(),
+           
          ],
         ),
       ),
