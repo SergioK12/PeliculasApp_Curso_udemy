@@ -26,7 +26,7 @@ class CardSwiper extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              onTap: () => Navigator.pushNamed(context, "Detalles", arguments: "TST"),
+              onTap: () => Navigator.pushNamed(context, "Detalles", arguments: "KLKMMGV"),
             );
         }
          
