@@ -1,14 +1,17 @@
 import 'package:app_peliculas/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+//import 'package:http/http.dart' as http;
 
 class DetailsView extends StatelessWidget {
   const DetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
+   
     //TODO: Cambiar por una instancia de la clase
     final String movie = ModalRoute.of(context)?.settings.arguments.toString() ?? 'No-Movie';
     return Scaffold(
+      
       //appBar: AppBar(title: const Text("Detalles"),centerTitle: true,),
       body:  CustomScrollView(
         slivers: [
