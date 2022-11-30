@@ -1,3 +1,4 @@
+import 'package:app_peliculas/models/models.dart';
 import 'package:app_peliculas/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 //import 'package:http/http.dart' as http;
@@ -8,18 +9,18 @@ class DetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    
-    //TODO: Cambiar por una instancia de la clase
-    final String movie = ModalRoute.of(context)?.settings.arguments.toString() ?? 'No-Movie';
+    
+    final Movie movie = ModalRoute.of(context)?.settings.arguments as Movie;
     return Scaffold(
       
       //appBar: AppBar(title: const Text("Detalles"),centerTitle: true,),
       body:  CustomScrollView(
         slivers: [
-          const CustomSliverAppbar(),
+           CustomSliverAppbar( imagenfondo: movie.backdropPath!),
           SliverList(
             delegate: SliverChildListDelegate([
-              Text(movie),
-              const PosterAndTitle(),
+              //Text(movie.title),
+              PosterAndTitle(lapeli: movie),
               _Overview(),
               _Overview(),
               const CastingCards()
@@ -34,7 +35,9 @@ class DetailsView extends StatelessWidget {
 }
 
 class CustomSliverAppbar extends StatelessWidget {
-  const CustomSliverAppbar({super.key});
+
+  final String imagenfondo;
+  const CustomSliverAppbar({super.key, required this.imagenfondo});
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +54,9 @@ class CustomSliverAppbar extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 5),
           child: const Text("Imagen.data", style: TextStyle(fontSize: 16),),
         ),
-        background: const FadeInImage(
+        background:  FadeInImage(
           placeholder: AssetImage("assets/load.gif"),
-          image: NetworkImage("https://via.placeholder.com/500x300.jpg"),
+          image: NetworkImage(imagenfondo),
           fit: BoxFit.cover,
         ),
       ),
@@ -62,7 +65,8 @@ class CustomSliverAppbar extends StatelessWidget {
 }
 
 class PosterAndTitle extends StatelessWidget {
-  const PosterAndTitle({super.key});
+  final Movie lapeli;
+  const PosterAndTitle({super.key, required this.lapeli});
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +78,9 @@ class PosterAndTitle extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: const FadeInImage(
-              placeholder:  AssetImage("assets/load.gif"),
-              image: NetworkImage("https://via.placeholder.com/200x300.jpg"),
+            child:  FadeInImage(
+              placeholder:  const AssetImage("assets/load.gif"),
+              image: NetworkImage(lapeli.fullposterImage),
               height: 150,
             ),
           ),
@@ -84,7 +88,7 @@ class PosterAndTitle extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children:  [
-              Text("pelicula.nombre", style: textTheme.headline5, overflow: TextOverflow.ellipsis,maxLines: 2,),
+              Text("${ lapeli.title} ", style: textTheme.headline5, overflow: TextOverflow.ellipsis,maxLines: 2,),
               Text("Este es un subtitulo", style: textTheme.subtitle1, overflow: TextOverflow.ellipsis,),
               Row(
                 children: [
