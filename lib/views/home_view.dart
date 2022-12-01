@@ -28,6 +28,7 @@ class HomeView extends StatelessWidget {
               movies: providermovie.onDisplaymovie,
             ),
             MovieSlider(
+              
               listadepelis: providermovie.popularMovies,
               titulo: "Populares",
               onNetxPage: () => providermovie.getPopularovies(),
