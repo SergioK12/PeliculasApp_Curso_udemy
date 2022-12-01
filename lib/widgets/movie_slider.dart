@@ -1,10 +1,34 @@
 import 'package:app_peliculas/models/models.dart';
 import 'package:flutter/material.dart';
 
-class MovieSlider extends StatelessWidget {
+class MovieSlider extends StatefulWidget {
+  final Function onNetxPage;
   final List<Movie> listadepelis;
   final String? titulo;
-  const MovieSlider({super.key, this.titulo, required this.listadepelis});
+  const MovieSlider({super.key, this.titulo, required this.listadepelis, required this.onNetxPage});
+
+  @override
+  State<MovieSlider> createState() => _MovieSliderState();
+}
+
+class _MovieSliderState extends State<MovieSlider> {
+  ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 500) {
+        widget.onNetxPage();
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +49,12 @@ class MovieSlider extends StatelessWidget {
           const SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
+                controller: scrollController,
                 scrollDirection: Axis.horizontal,
-                itemCount: listadepelis.length,
+                itemCount: widget.listadepelis.length,
                 itemBuilder: (_, index) {
-                  final movie = listadepelis[index];
-                  print(movie.backdropPath.toString());
+                  final movie = widget.listadepelis[index];
+                  //print(movie.backdropPath.toString());
                   return _MoviePoster(
                     movie: movie,
                   );
@@ -67,11 +92,12 @@ class _MoviePoster extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.pushNamed(context, "Detalles", arguments: movie.id.toString());
+              Navigator.pushNamed(context, "Detalles",
+                  arguments: movie.id.toString());
             },
           ),
           const SizedBox(height: 5),
-           Text(
+          Text(
             movie.title,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
