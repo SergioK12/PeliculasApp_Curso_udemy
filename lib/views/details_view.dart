@@ -9,20 +9,18 @@ class DetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    
-    
     final Movie movie = ModalRoute.of(context)?.settings.arguments as Movie;
     return Scaffold(
-      
       //appBar: AppBar(title: const Text("Detalles"),centerTitle: true,),
       body:  CustomScrollView(
         slivers: [
-           CustomSliverAppbar( imagenfondo: movie.backdropPath!),
+           CustomSliverAppbar( movie: movie),
           SliverList(
             delegate: SliverChildListDelegate([
               //Text(movie.title),
               PosterAndTitle(lapeli: movie),
-              _Overview(),
-              _Overview(),
+              _Overview(descripcion: movie.overview.toString()),
+              
               const CastingCards()
               //const SizedBox(height: 20,),
               
@@ -36,8 +34,8 @@ class DetailsView extends StatelessWidget {
 
 class CustomSliverAppbar extends StatelessWidget {
 
-  final String imagenfondo;
-  const CustomSliverAppbar({super.key, required this.imagenfondo});
+  final Movie movie;
+  const CustomSliverAppbar({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +46,18 @@ class CustomSliverAppbar extends StatelessWidget {
       centerTitle: true,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.all(0),
-        title: Container(
-          alignment: Alignment.bottomCenter,
-          width:double.infinity ,
-          padding: const EdgeInsets.only(bottom: 5),
-          child: const Text("Imagen.data", style: TextStyle(fontSize: 16),),
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            alignment: Alignment.bottomCenter,
+            width:double.infinity ,
+            padding: const EdgeInsets.only(bottom: 5),
+            child:  Text(movie.title, style: const TextStyle(fontSize: 16),textAlign: TextAlign.center,),
+          ),
         ),
         background:  FadeInImage(
-          placeholder: AssetImage("assets/load.gif"),
-          image: NetworkImage(imagenfondo),
+          placeholder: const AssetImage("assets/load.gif"),
+          image: NetworkImage(movie.fullBackDropPath),
           fit: BoxFit.cover,
         ),
       ),
@@ -68,8 +69,10 @@ class PosterAndTitle extends StatelessWidget {
   final Movie lapeli;
   const PosterAndTitle({super.key, required this.lapeli});
 
+
   @override
   Widget build(BuildContext context) {
+  final size = MediaQuery.of(context).size;
   final TextTheme textTheme = Theme.of(context).textTheme;
     return Container(
       margin: const EdgeInsets.only(top: 20),
@@ -85,19 +88,33 @@ class PosterAndTitle extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 20,),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children:  [
-              Text("${ lapeli.title} ", style: textTheme.headline5, overflow: TextOverflow.ellipsis,maxLines: 2,),
-              Text("Este es un subtitulo", style: textTheme.subtitle1, overflow: TextOverflow.ellipsis,),
-              Row(
-                children: [
-                  const Icon(Icons.star_outline_sharp, color: Colors.greenAccent,),
-                  const SizedBox(width: 5,),
-                  Text("Una pequeña descripcion", style: textTheme.caption,),
-                ],
-              ),
-            ],
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: size.width - 160) ,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children:  [
+                Text(
+                    lapeli.title,
+                    textDirection: TextDirection.ltr,
+                    style: textTheme.headline5,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
+                ),
+                Text(
+                  lapeli.originalTitle,
+                  style: textTheme.subtitle1,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                Row(
+                  children: [
+                    const Icon(Icons.star_outline_sharp, color: Colors.greenAccent,),
+                    const SizedBox(width: 5,),
+                    Text("8.5", style: textTheme.caption,),
+                  ],
+                ),
+              ],
+            ),
           )
         ],
       ),
@@ -106,14 +123,16 @@ class PosterAndTitle extends StatelessWidget {
 }
 
 class _Overview extends StatelessWidget {
+  final  String descripcion;
 
+  const _Overview({required this.descripcion});
 
   @override
   Widget build(BuildContext context) {
     return  Container(
       padding: const EdgeInsets.all(10),
       child:  Text(
-        "Desde pequeños nuestros padres tratan de inculcarnos los hábitos que van a formar parte de nuestra vida. La presión por elegirlos es enorme, ya que determina el carácter que tendremos de adultos.Un ejemplo claro: Si le enseñas a un niño a ahorrar, crecerá con esta mentalidad y lo hará de forma inconsciente. Pero, si durante años crece con la idea de que despilfarrar está bien, crecerá como un adulto incapaz de generar ahorros. ",
+      descripcion,
         style: Theme.of(context).textTheme.subtitle1,
         textAlign: TextAlign.justify,
       ),

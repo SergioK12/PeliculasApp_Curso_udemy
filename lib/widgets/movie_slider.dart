@@ -55,8 +55,11 @@ class _MovieSliderState extends State<MovieSlider> {
                 itemBuilder: (_, index) {
                   final movie = widget.listadepelis[index];
                   //print(movie.backdropPath.toString());
-                  return _MoviePoster(
-                    movie: movie,
+                  return GestureDetector(
+                    onTap: () =>  Navigator.pushNamed(context, "Detalles", arguments: movie),
+                    child: _MoviePoster(
+                      movie: movie,
+                    ),
                   );
                 }),
           )
@@ -69,7 +72,7 @@ class _MovieSliderState extends State<MovieSlider> {
 class _MoviePoster extends StatelessWidget {
   final Movie movie;
 
-  const _MoviePoster({super.key, required this.movie});
+  const _MoviePoster({ required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -91,10 +94,7 @@ class _MoviePoster extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            onTap: () {
-              Navigator.pushNamed(context, "Detalles",
-                  arguments: movie.id.toString());
-            },
+            onTap: () => Navigator.pushNamed(context, "Detalles", arguments: movie),
           ),
           const SizedBox(height: 5),
           Text(
