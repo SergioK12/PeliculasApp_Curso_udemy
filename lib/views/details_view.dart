@@ -21,7 +21,7 @@ class DetailsView extends StatelessWidget {
               PosterAndTitle(lapeli: movie),
               _Overview(descripcion: movie.overview.toString()),
               
-              const CastingCards()
+              CastingCards( movieId: movie.id)
               //const SizedBox(height: 20,),
               
             ])
