@@ -1,4 +1,5 @@
 import 'package:app_peliculas/models/models.dart';
+import 'package:app_peliculas/models/search_movies_response.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,9 +10,7 @@ class MovieProvider extends ChangeNotifier {
   final String _lenguaje =  "es-ES";
   List<Movie> onDisplaymovie = [];
   List<Movie> popularMovies = [];
-  Map<int, List<Cast>> listadeactores = {
-
-  };
+  Map<int, List<Cast>> listadeactores = {};
   int _popularPages = 0;
 
   MovieProvider() {
@@ -51,7 +50,6 @@ class MovieProvider extends ChangeNotifier {
     //debugPrint(nowplayingresponse.results[0].title);
     popularMovies = [...popularMovies, ...popularResponse.results];
     notifyListeners();
-
   }
 
   Future getmoviecast(int moviId) async{
@@ -66,6 +64,21 @@ class MovieProvider extends ChangeNotifier {
 
     listadeactores[moviId] = creditresponse.cast;
 
-  return creditresponse.cast;
+   return creditresponse.cast;
+  }
+
+  Future <List<Movie>> searchMovies ( String querybus ) async{
+
+    final url = Uri.https(_baseUrl, '3/search/movie', {
+      'api_key': _apiKey,
+      'language': _lenguaje,
+      'query': querybus
+    });
+
+    final response = await http.get(url);
+    final searchresponse =  SearchResponse.fromJson(response.body);
+    return searchresponse.results;
+
+
   }
 }

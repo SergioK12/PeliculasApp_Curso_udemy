@@ -3,6 +3,8 @@ import 'package:app_peliculas/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../search/search_delegate.dart';
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
@@ -17,7 +19,10 @@ class HomeView extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
-            onPressed: () {},
+            onPressed: ()=> showSearch(
+              context: context,
+               delegate: MovieSeacrhDelegate()
+              ),
           ),
         ],
       ),
