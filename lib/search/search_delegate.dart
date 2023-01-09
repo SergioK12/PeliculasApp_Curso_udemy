@@ -1,4 +1,7 @@
+import 'package:app_peliculas/models/movie.dart';
+import 'package:app_peliculas/provider/movie_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MovieSeacrhDelegate extends SearchDelegate {
 
@@ -23,6 +26,12 @@ class MovieSeacrhDelegate extends SearchDelegate {
       );
   }
 
+  Widget _emptyWidget(){
+    return  const Center(
+      child: Icon(Icons.movie_creation_outlined),
+    );
+  }
+
   @override
   Widget buildResults(BuildContext context) {
     return  Text("test mas$query");
@@ -31,17 +40,49 @@ class MovieSeacrhDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     if(query.isEmpty){
-      return  Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text("Buscanding"),
-            Icon(Icons.movie_creation_sharp),
-          ],
-        ),
-      );
-
+      return  _emptyWidget();
     }
-      return Container();
+      final provider = Provider.of<MovieProvider>(context, listen: false);
+      return FutureBuilder(
+        future: provider.searchMovies(query),
+        builder: (context, snapshot) {
+
+          if(!snapshot.hasData){
+            return _emptyWidget();
+          }
+
+          final movies = snapshot.data;
+
+          return ListView.builder(
+            itemCount: movies?.length,
+            itemBuilder: (context, index) => MovieItem(movie: movies![index])
+          );
+
+        }
+      );
+  }
+
+  
+}
+
+class MovieItem extends StatelessWidget {
+
+  final Movie movie;
+  const MovieItem({super.key, required this.movie});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: FadeInImage(
+        placeholder: const AssetImage("assets/load.gif"),
+        image: NetworkImage(movie.fullBackDropPath),
+        width: 50,
+        fit: BoxFit.contain,
+      ),
+      title: Text(movie.title),
+      subtitle: Text(movie.originalLanguage),
+      onTap: (() => Navigator.pushNamed(context, 'Detalles', arguments: movie)
+      )
+    );
   }
 }
