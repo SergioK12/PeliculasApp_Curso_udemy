@@ -55,7 +55,7 @@ class CastingCards extends StatelessWidget {
 class _CastCard extends StatelessWidget {
   const _CastCard(this.actor);
 
-  final  actor;
+  final dynamic actor;
 
   @override
   Widget build(BuildContext context) {

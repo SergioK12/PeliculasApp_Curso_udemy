@@ -89,7 +89,7 @@ class PosterAndTitle extends StatelessWidget {
           ),
           const SizedBox(width: 20,),
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: size.width - 160) ,
+            constraints: BoxConstraints(maxWidth: size.width - (size.width * 0.4) ) ,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children:  [
