@@ -86,8 +86,9 @@ class MovieProvider extends ChangeNotifier {
 
   void getSuggestionsByQuery(String elQuery) {
     debouncer.value = '';
+
     debouncer.onValue = (value) async {
-      debugPrint("tenemos valor a buscar");
+      //debugPrint("tenemos valor a buscar");
 
       final result = await searchMovies(elQuery);
       _suggestionStreamController.add(result);
