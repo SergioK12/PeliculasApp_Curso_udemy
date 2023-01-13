@@ -41,21 +41,29 @@ class MovieSeacrhDelegate extends SearchDelegate {
     if (query.isEmpty) {
       return _emptyWidget();
     }
+    debugPrint("peticion http");
+
+    
     final provider = Provider.of<MovieProvider>(context, listen: false);
-    return FutureBuilder(
-        future: provider.searchMovies(query),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return _emptyWidget();
-          }
-
-          final movies = snapshot.data;
-
-          return ListView.builder(
-              itemCount: movies?.length,
-              itemBuilder: (context, index) =>
-                  MovieItem(movie: movies![index]));
-        });
+    return StreamBuilder(
+      stream: provider.suggestionStream,
+      builder: (context, snapshot) {
+        return FutureBuilder(
+            future: provider.searchMovies(query),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return _emptyWidget();
+              }
+    
+              final movies = snapshot.data;
+    
+              return ListView.builder(
+                  itemCount: movies?.length,
+                  itemBuilder: (context, index) =>
+                      MovieItem(movie: movies![index]));
+            });
+      }
+    );
   }
 }
 
