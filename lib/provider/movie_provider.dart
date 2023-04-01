@@ -98,7 +98,7 @@ class MovieProvider extends ChangeNotifier {
       debouncer.value = elQuery;
     });
 
-    Future.delayed(const Duration(milliseconds: 300))
+    Future.delayed(const Duration(milliseconds: 300)) 
         .then((value) => timer.cancel());
   }
 }
