@@ -99,13 +99,13 @@ class PosterAndTitle extends StatelessWidget {
                 Text(
                     lapeli.title,
                     textDirection: TextDirection.ltr,
-                    style: textTheme.headline5,
+                    style: textTheme.titleMedium,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 4,
                 ),
                 Text(
                   lapeli.originalTitle,
-                  style: textTheme.subtitle1,
+                  style: textTheme.bodyMedium,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                 ),
@@ -113,7 +113,7 @@ class PosterAndTitle extends StatelessWidget {
                   children: [
                     const Icon(Icons.star_outline_sharp, color: Colors.greenAccent,),
                     const SizedBox(width: 5,),
-                    Text("8.5", style: textTheme.caption,),
+                    Text("8.5", style: textTheme.headlineLarge,),
                   ],
                 ),
               ],
@@ -136,7 +136,7 @@ class _Overview extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child:  Text(
       descripcion,
-        style: Theme.of(context).textTheme.subtitle1,
+        style: Theme.of(context).textTheme.bodyMedium,
         textAlign: TextAlign.justify,
       ),
     );
